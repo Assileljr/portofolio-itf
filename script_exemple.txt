@@ -1,0 +1,87 @@
+Objectif
+Automatiser les opérations d’administration système, de déploiement et de maintenance des serveurs pour gagner du temps, réduire les erreurs humaines et standardiser les configurations.
+
+1. Automatisation avec Bash (Linux / macOS)
+Exemple : installation automatique d’un serveur web Apache
+
+#!/bin/bash
+
+# Script : install_apache.sh
+# Objectif : installer et démarrer Apache automatiquement
+echo "Mise à jour du système..."
+sudo apt update -y && sudo apt upgrade -y
+echo "Installation d'Apache..."
+sudo apt install apache2 -y
+echo "Activation et démarrage du service Apache..."
+sudo systemctl enable apache2
+sudo systemctl start apache2
+echo "Apache installé avec succès !"
+systemctl status apache2 | grep Active
+Utilisation : 
+chmod +x install_apache.sh
+./install_apache.sh
+
+Ce que fait le script :
+Met à jour le système
+Installe Apache
+Active le service au démarrage
+Vérifie son statut
+
+Exemple : déploiement automatique d’un projet web
+
+#!/bin/bash
+
+DEPLOY_DIR="/var/www/html/mon_site"
+GIT_REPO="https://github.com/utilisateur/mon_site.git"
+
+echo "Déploiement de l'application..."
+sudo rm -rf $DEPLOY_DIR
+sudo git clone $GIT_REPO $DEPLOY_DIR
+sudo chown -R www-data:www-data $DEPLOY_DIR
+
+echo "Redémarrage du serveur Apache..."
+sudo systemctl restart apache2
+
+echo "Déploiement terminé avec succès !"
+
+
+2. Automatisation avec PowerShell (Windows)
+Exemple : installation automatique d’IIS
+
+# Script : Install-IIS.ps1
+
+Write-Host "Installation d'IIS en cours..."
+Install-WindowsFeature -name Web-Server -IncludeManagementTools
+
+Write-Host "Démarrage du service IIS..."
+Start-Service W3SVC
+
+Write-Host "IIS installé et démarré avec succès !"
+
+Exécution :
+Set-ExecutionPolicy RemoteSigned
+.\Install-IIS.ps1
+
+Exemple : déploiement d’un site web sur IIS
+
+$siteName = "MonSite"
+$sitePath = "C:\inetpub\wwwroot\MonSite"
+$port = 8080
+
+# Création du répertoire
+New-Item -Path $sitePath -ItemType Directory -Force
+
+# Copie des fichiers du projet
+Copy-Item "C:\projets\MonSite\*" -Destination $sitePath -Recurse -Force
+
+# Création du site IIS
+New-WebSite -Name $siteName -Port $port -PhysicalPath $sitePath -Force
+Write-Host "Site web '$siteName' déployé sur le port $port avec succès !"
+
+3. Cas d’usage typiques
+
+Installation et configuration d’environnements serveurs
+Sauvegarde et restauration automatisées
+Déploiement d’applications web (CI/CD simple)
+Surveillance de services et envoi d’alertes
+Nettoyage de logs ou rotation automatique
